@@ -1,0 +1,37 @@
+[package]
+name = "erdos-unit-distance"
+version = "0.1.0"
+edition = "2024"
+authors = ["Lars Brusletto"]
+license = "MIT OR Apache-2.0"
+description = "Certified finite prototypes for Erdős unit-distance constructions, including classical grids and native multiquadratic Section 2 generation."
+repository = "https://github.com/larsbrsletto/erdos-unit-distance"
+readme = "README.md"
+keywords = ["erdos", "unit-distance", "algebraic-number-theory", "geometry", "graph-theory"]
+categories = ["science", "mathematics", "algorithms"]
+
+[workspace]
+members = [
+    ".",
+    "python"
+]
+
+[features]
+default = ["serde"]
+serde = []
+
+[dependencies]
+num-bigint = "0.4"
+num-complex = "0.4"
+num-integer = "0.1"
+num-rational = "0.4"
+num-traits = "0.2"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[dev-dependencies]
+criterion = "0.5"
+
+[[bench]]
+name = "production"
+harness = false

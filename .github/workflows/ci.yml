@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  rust-tests:
+    name: Rust Check & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Format Check
+        run: ./scripts/check-format.sh
+
+      - name: Clippy Lints
+        run: ./scripts/check-clippy-strict.sh
+
+      - name: Run Cargo Tests
+        run: ./scripts/check-tests.sh
+
+      - name: Run Doc Tests
+        run: ./scripts/check-doctests.sh
+
+      - name: Check Examples
+        run: ./scripts/check-examples.sh
+
+      - name: Compile Benchmarks
+        run: ./scripts/check-bench-compile.sh
+
+  python-tests:
+    name: Python Bindings Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install maturin pytest
+
+      - name: Build and Install Python Bindings
+        run: |
+          cd python
+          maturin develop --release
+          cd ..
+
+      - name: Run Verification Script
+        run: python test_bindings.py

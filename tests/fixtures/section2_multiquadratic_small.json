@@ -1,0 +1,25 @@
+{
+  "construction": "native finite multiquadratic prototype",
+  "source_step": "Section 2 geometric construction",
+  "field": {
+    "generators": [5, 17],
+    "validated_generators": [5, 17, -1],
+    "split_prime": 101,
+    "k": 1
+  },
+  "section2": {
+    "target_count": 100,
+    "projection_index": 0,
+    "expected_edge_count": 248,
+    "expected_verified": true,
+    "translations": {
+      "expected_min_count": 1
+    },
+    "candidates": {
+      "expected_count": 100
+    },
+    "projected_points": {
+      "expected_count": 100
+    }
+  }
+}

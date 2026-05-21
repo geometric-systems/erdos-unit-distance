@@ -1,0 +1,13 @@
+[package]
+name = "erdos-unit-distance-python"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lib]
+name = "erdos_unit_distance"
+crate-type = ["cdylib"]
+
+[dependencies]
+erdos-unit-distance = { path = "../" }
+pyo3 = { version = "0.21.2", features = ["extension-module"] }

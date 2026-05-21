@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Brusletto"
+    given-names: "Lars"
+title: "erdos-unit-distance: Reference implementations of Erdős unit-distance algebraic tower constructions"
+version: 0.1.0
+date-released: 2026-05-21
+url: "https://github.com/larsbrsletto/erdos-unit-distance"
+license: "MIT OR Apache-2.0"
