@@ -3,10 +3,44 @@ requires = ["maturin>=1.0,<2.0"]
 build-backend = "maturin"
 
 [project]
-name = "erdos_unit_distance"
+name = "erdos-unit-distance"
 version = "0.1.0"
-requires-python = ">=3.7"
+description = "Python bindings for certified unit-distance point sets and graphs."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT OR Apache-2.0" }
+authors = [{ name = "Lars Brusletto" }]
+keywords = [
+    "erdos",
+    "unit-distance",
+    "discrete-geometry",
+    "graph-theory",
+    "number-theory",
+]
 classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Programming Language :: Rust",
     "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Scientific/Engineering :: Mathematics",
 ]
+
+[project.urls]
+Homepage = "https://github.com/geometric-systems/erdos-unit-distance"
+Repository = "https://github.com/geometric-systems/erdos-unit-distance"
+Documentation = "https://docs.rs/erdos-unit-distance"
+Issues = "https://github.com/geometric-systems/erdos-unit-distance/issues"

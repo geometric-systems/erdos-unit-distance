@@ -3,6 +3,11 @@ name = "erdos-unit-distance-python"
 version = "0.1.0"
 edition = "2021"
 publish = false
+authors = ["Lars Brusletto"]
+license = "MIT OR Apache-2.0"
+description = "Python bindings for certified unit-distance point sets and graphs."
+repository = "https://github.com/geometric-systems/erdos-unit-distance"
+homepage = "https://github.com/geometric-systems/erdos-unit-distance"
 
 [lib]
 name = "erdos_unit_distance"
