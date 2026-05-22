@@ -4,10 +4,12 @@ version = "0.1.0"
 edition = "2024"
 authors = ["Lars Brusletto"]
 license = "MIT OR Apache-2.0"
-description = "Certified finite prototypes for Erdős unit-distance constructions, including classical grids and native multiquadratic Section 2 generation."
-repository = "https://github.com/larsbrsletto/erdos-unit-distance"
+description = "Certified unit-distance point sets and graphs for discrete geometry in Rust."
+documentation = "https://docs.rs/erdos-unit-distance"
+homepage = "https://github.com/geometric-systems/erdos-unit-distance"
+repository = "https://github.com/geometric-systems/erdos-unit-distance"
 readme = "README.md"
-keywords = ["erdos", "unit-distance", "algebraic-number-theory", "geometry", "graph-theory"]
+keywords = ["erdos", "unit-distance", "discrete-geometry", "graph-theory", "number-theory"]
 categories = ["science", "mathematics", "algorithms"]
 
 [workspace]

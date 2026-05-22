@@ -1,8 +1,16 @@
-# Erdős Unit-Distance Constructions
+# erdos-unit-distance: Certified Unit-Distance Graphs and Point Sets
 
-Production-oriented Rust and Python APIs for finite, certified unit-distance point-set constructions.
+Generate and verify finite unit-distance point sets and unit distance graphs for discrete geometry in Rust and Python. Includes the Moser spindle, square and triangular grids, and certified multiquadratic constructions inspired by the Erdős/Erdos unit-distance breakthrough.
 
 The first supported production target is a **finite Section 2 multiquadratic construction**. The crate does **not** claim to implement the full class-field tower proof. Exact certificate data is authoritative; floating-point coordinates are for application output, visualization, export, and independent numerical audit.
+
+## Use Cases
+
+- Generate unit-distance graphs for algorithm experiments.
+- Build certified finite point sets for discrete geometry applications.
+- Reproduce Moser spindle, square grid, and triangular grid examples.
+- Export geometry to CSV, SVG, or OBJ.
+- Verify construction certificates independently from floating-point output.
 
 ## Rust Quick Start
 

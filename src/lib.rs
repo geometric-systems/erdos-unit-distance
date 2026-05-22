@@ -6,11 +6,15 @@
 // The current native algebraic implementation follows the Section 2 geometric shape;
 // it does not yet implement the full class-field tower construction.
 
-//! # Erdős Unit-Distance Constructions
+//! # erdos-unit-distance
 //!
-//! A Rust library for generating unit-distance point sets in the plane.
-//! Classical constructions are exact; native finite multiquadratic prototype
-//! inputs are validated and unsupported configurations are rejected before generation.
+//! Certified unit-distance point sets and unit distance graphs for discrete geometry.
+//!
+//! This crate generates classical examples such as the Moser spindle and finite
+//! certified multiquadratic constructions related to the Erdős/Erdos unit-distance
+//! problem. Classical constructions are exact; native finite multiquadratic
+//! prototype inputs are validated and unsupported configurations are rejected
+//! before generation.
 //!
 //! ## Correctness Contract
 //!

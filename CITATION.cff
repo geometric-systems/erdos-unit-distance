@@ -6,5 +6,5 @@ authors:
 title: "erdos-unit-distance: Reference implementations of Erdős unit-distance algebraic tower constructions"
 version: 0.1.0
 date-released: 2026-05-21
-url: "https://github.com/larsbrsletto/erdos-unit-distance"
+url: "https://github.com/geometric-systems/erdos-unit-distance"
 license: "MIT OR Apache-2.0"
