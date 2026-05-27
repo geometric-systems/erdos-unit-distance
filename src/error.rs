@@ -29,31 +29,65 @@ pub enum GenerationError {
     InsufficientPoints { requested: usize, found: usize },
 }
 
+impl GenerationError {
+    /// Stable machine-readable error code.
+    ///
+    /// Display messages are meant for humans and may improve over time. Match on
+    /// this code when an application needs stable diagnostics across patch releases.
+    pub fn code(&self) -> &'static str {
+        match self {
+            GenerationError::InvalidGenerator { .. } => "invalid_generator",
+            GenerationError::DuplicateGenerator { .. } => "duplicate_generator",
+            GenerationError::InvalidSplitPrime { .. } => "invalid_split_prime",
+            GenerationError::PrimeNotSplit { .. } => "prime_not_split",
+            GenerationError::InvalidFieldElementDimension { .. } => {
+                "invalid_field_element_dimension"
+            }
+            GenerationError::InvalidSearchParameter { .. } => "invalid_search_parameter",
+            GenerationError::PrimeElementNotFound { .. } => "prime_element_not_found",
+            GenerationError::MissingImaginaryGenerator => "missing_imaginary_generator",
+            GenerationError::InsufficientPoints { .. } => "insufficient_points",
+        }
+    }
+}
+
 impl fmt::Display for GenerationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             GenerationError::InvalidGenerator { generator, reason } => {
-                write!(f, "invalid generator {generator}: {reason}")
+                write!(
+                    f,
+                    "invalid generator {generator}: {reason}; use positive squarefree integers greater than 1, with -1 reserved for the imaginary generator"
+                )
             }
             GenerationError::DuplicateGenerator { generator } => {
-                write!(f, "duplicate generator {generator}")
+                write!(
+                    f,
+                    "duplicate generator {generator}; each generator may appear only once"
+                )
             }
             GenerationError::InvalidSplitPrime { split_prime } => {
-                write!(f, "split prime {split_prime} is not an odd prime")
+                write!(
+                    f,
+                    "split prime {split_prime} is not an odd prime; choose an odd prime that splits completely in the configured field"
+                )
             }
             GenerationError::PrimeNotSplit {
                 split_prime,
                 generator,
             } => write!(
                 f,
-                "prime {split_prime} is not split by generator {generator}"
+                "prime {split_prime} is not split by generator {generator}; complete splitting requires Legendre symbol 1 for every generator, including -1"
             ),
             GenerationError::InvalidFieldElementDimension { expected, actual } => write!(
                 f,
                 "field element has {actual} coefficients, but field degree is {expected}"
             ),
             GenerationError::InvalidSearchParameter { parameter, reason } => {
-                write!(f, "invalid search parameter {parameter}: {reason}")
+                write!(
+                    f,
+                    "invalid search parameter {parameter}: {reason}; adjust the multiquadratic search configuration"
+                )
             }
             GenerationError::PrimeElementNotFound {
                 prime,
@@ -68,7 +102,7 @@ impl fmt::Display for GenerationError {
             ),
             GenerationError::InsufficientPoints { requested, found } => write!(
                 f,
-                "could not generate enough points: requested {requested}, found {found}"
+                "could not generate enough points: requested {requested}, found {found}; increase radius attempts/candidate multiplier or lower the requested count"
             ),
         }
     }
@@ -129,6 +163,41 @@ pub enum VerificationError {
     InvalidConstruction { reason: String },
     /// The serialized certificate does not match the supported schema.
     CertificateSchemaMismatch { reason: String },
+}
+
+impl VerificationError {
+    /// Stable machine-readable error code.
+    ///
+    /// Display messages are meant for humans and may improve over time. Match on
+    /// this code when an application needs stable diagnostics across patch releases.
+    pub fn code(&self) -> &'static str {
+        match self {
+            VerificationError::PointCountMismatch { .. } => "point_count_mismatch",
+            VerificationError::EdgeIndexOutOfBounds { .. } => "edge_index_out_of_bounds",
+            VerificationError::SelfEdge { .. } => "self_edge",
+            VerificationError::EdgeSetMismatch { .. } => "edge_set_mismatch",
+            VerificationError::PointMismatch { .. } => "point_mismatch",
+            VerificationError::QuantizedProjectionMismatch { .. } => {
+                "quantized_projection_mismatch"
+            }
+            VerificationError::AlgebraicKeyDimensionMismatch { .. } => {
+                "algebraic_key_dimension_mismatch"
+            }
+            VerificationError::InvalidAlgebraicKeyDenominator { .. } => {
+                "invalid_algebraic_key_denominator"
+            }
+            VerificationError::TranslationNotNormOne { .. } => "translation_not_norm_one",
+            VerificationError::CandidateOutsideWindow { .. } => "candidate_outside_window",
+            VerificationError::ProjectionMismatch { .. } => "projection_mismatch",
+            VerificationError::CandidatePathMismatch { .. } => "candidate_path_mismatch",
+            VerificationError::CandidatePathTranslationOutOfBounds { .. } => {
+                "candidate_path_translation_out_of_bounds"
+            }
+            VerificationError::EdgeProvenanceMismatch { .. } => "edge_provenance_mismatch",
+            VerificationError::InvalidConstruction { .. } => "invalid_construction",
+            VerificationError::CertificateSchemaMismatch { .. } => "certificate_schema_mismatch",
+        }
+    }
 }
 
 impl fmt::Display for VerificationError {

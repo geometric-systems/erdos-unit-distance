@@ -180,7 +180,7 @@ checksum = "91622ff5e7162018101f2fea40d6ebf4a78bbe5a49736a2020649edf9693679e"
 
 [[package]]
 name = "erdos-unit-distance"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "criterion",
  "num-bigint",
@@ -194,7 +194,7 @@ dependencies = [
 
 [[package]]
 name = "erdos-unit-distance-python"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "erdos-unit-distance",
  "pyo3",

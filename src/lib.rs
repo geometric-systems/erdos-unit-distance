@@ -8,32 +8,30 @@
 
 //! # erdos-unit-distance
 //!
-//! Certified unit-distance point sets and unit distance graphs for discrete geometry.
+//! Certified finite unit-distance point sets for Rust applications.
 //!
-//! This crate generates classical examples such as the Moser spindle and finite
-//! certified multiquadratic constructions related to the Erdős/Erdos unit-distance
-//! problem. Classical constructions are exact; native finite multiquadratic
-//! prototype inputs are validated and unsupported configurations are rejected
-//! before generation.
+//! The supported `0.2` workflows are:
 //!
-//! ## Correctness Contract
+//! - **Classical point sets**: deterministic Moser spindle, square grid, and
+//!   triangular grid constructors.
+//! - **Finite multiquadratic generation**: a native Section 2-style prototype
+//!   with validated squarefree generators and complete split-prime checks.
+//! - **Certificate verification**: machine-checkable finite certificates plus a
+//!   separate floating-point audit for exported/display coordinates.
 //!
-//! - Classical constructors return fixed, deterministic point sets.
-//! - Native multiquadratic constructors validate squarefree generators and
-//!   complete splitting of the requested odd prime before generating points.
-//! - Native multiquadratic point generation is a bounded Section 2-style
-//!   candidate search followed by projection, deduplication, and density pruning;
-//!   it is not the full class-field tower construction.
-//! - `generate_certified` returns a finite certificate whose edge claims are
-//!   independently recomputed by `ConstructionCertificate::verify`.
+//! Exact certificate data is authoritative. Floating-point [`Point2`] values are
+//! application output and numerical audit data, not the proof object.
 //!
-//! ## Quick Start
+//! This crate does not implement class groups, ideal arithmetic, Sage/PARI
+//! backends, the full Golod-Shafarevich/class-field tower construction, or a
+//! proof of the asymptotic theorem beyond finite certified outputs.
+//!
+//! ## Classical Point Sets
 //!
 //! ```
 //! use erdos_unit_distance::UnitDistanceSet;
 //! use erdos_unit_distance::utils::count_unit_distances;
 //!
-//! // Generate a classic Moser Spindle (7 points, 11 unit-distance edges)
 //! let spindle = UnitDistanceSet::moser_spindle();
 //! let points = spindle.generate_points(7).unwrap();
 //! assert_eq!(points.len(), 7);
@@ -43,7 +41,7 @@
 //! assert_eq!(edges, 11);
 //! ```
 //!
-//! ## Native Finite Multiquadratic Prototype
+//! ## Finite Multiquadratic Generation
 //!
 //! ```
 //! use erdos_unit_distance::{MultiquadraticConfig, UnitDistanceSet};
@@ -59,10 +57,12 @@
 //! assert!(edges > 0);
 //! ```
 //!
-//! ## Certified Output
+//! ## Certificate Verification
 //!
 //! ```
-//! use erdos_unit_distance::{MultiquadraticConfig, UnitDistanceSet};
+//! use erdos_unit_distance::{
+//!     CertifiedPointSet, MultiquadraticConfig, UnitDistanceSet, CERTIFICATE_SCHEMA_VERSION,
+//! };
 //!
 //! let config = MultiquadraticConfig::builder(vec![5, 17], 101, 1).build().unwrap();
 //! let builder = UnitDistanceSet::multiquadratic(config);
@@ -70,6 +70,11 @@
 //! let report = certified.verify().unwrap();
 //! assert_eq!(report.point_count, 20);
 //! assert!(report.edge_count > 0);
+//!
+//! let json = certified.to_json().unwrap();
+//! let decoded = CertifiedPointSet::from_json(&json).unwrap();
+//! assert_eq!(CERTIFICATE_SCHEMA_VERSION, 1);
+//! assert_eq!(decoded.verify().unwrap().point_count, 20);
 //! ```
 
 pub mod algebraic {
@@ -89,8 +94,8 @@ pub mod utils;
 use crate::algebraic::field::MultiQuadraticField;
 use crate::algebraic::section2::generate_native_multiquadratic_section2;
 pub use crate::certificate::{
-    CertificateVerificationReport, CertifiedPointSet, ClassicalCertificate,
-    ClassicalConstructionKind, ConstructionCertificate, FloatingAuditReport,
+    CERTIFICATE_SCHEMA_VERSION, CertificateVerificationReport, CertifiedPointSet,
+    ClassicalCertificate, ClassicalConstructionKind, ConstructionCertificate, FloatingAuditReport,
     MultiquadraticCertificate, Point2,
 };
 use crate::classical::{generate_moser_spindle, generate_square_grid, generate_triangular_grid};
@@ -396,10 +401,13 @@ impl UnitDistanceSet {
         &self.construction
     }
 
-    /// Generates the point set of target size `n_target`.
+    /// Generates the point set of target size `n_target` as low-level `[f64; 2]` arrays.
     ///
     /// For `SquareGrid` and `MoserSpindle`, the `n_target` parameter is ignored
     /// and the natural point count of the construction is returned.
+    ///
+    /// Prefer [`UnitDistanceSet::generate_points`] for application code and
+    /// [`UnitDistanceSet::generate_certified`] when the caller needs verification data.
     pub fn generate(&self, n_target: usize) -> Result<Vec<[f64; 2]>, GenerationError> {
         match &self.construction {
             ConstructionType::SquareGrid { rows, cols } => Ok(generate_square_grid(*rows, *cols)),

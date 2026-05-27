@@ -58,6 +58,12 @@ print(certified["point_count"], certified["certified_edge_count"])
 
 More detail: `docs/correctness-contract.md`.
 
+## Certificate JSON
+
+Certificates serialize with schema version `1`. The top-level JSON envelope contains `schema_version` and `certified` fields, and applications can compare against the Rust constant `CERTIFICATE_SCHEMA_VERSION`.
+
+Exact certificate fields are the proof data. Floating fields are for display/export and tolerance-based audit. More detail: `docs/certificate-schema.md`.
+
 ## Supported APIs
 
 Rust:
@@ -101,6 +107,16 @@ Run real Criterion benchmarks with:
 ## Paper Traceability
 
 `docs/paper-map.md` tracks what is implemented from the proof and what remains external-backend or future work.
+
+## What This Is Not Yet
+
+- no class-group computation
+- no ideal arithmetic backend
+- no Sage/PARI backend
+- no full Golod-Shafarevich/class-field tower construction
+- no proof of the asymptotic theorem beyond finite certified outputs
+
+See `docs/paper-map.md` and `docs/correctness-contract.md` for the precise implementation boundary.
 
 ## License
 

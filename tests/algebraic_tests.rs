@@ -67,26 +67,34 @@ fn test_generator_validation_rejects_invalid_inputs() {
     ];
 
     for (generators, expected) in cases {
-        assert_eq!(
-            MultiQuadraticField::try_new(&generators).unwrap_err(),
-            expected
-        );
+        let actual = MultiQuadraticField::try_new(&generators).unwrap_err();
+        assert_eq!(actual.code(), expected.code());
+        assert_eq!(actual, expected);
     }
 }
 
 #[test]
 fn test_split_prime_validation() {
     assert!(UnitDistanceSet::try_new_multiquadratic(vec![5, 17], 101, 1).is_ok());
+    let invalid_even = UnitDistanceSet::try_new_multiquadratic(vec![5, 17], 2, 1).unwrap_err();
+    assert_eq!(invalid_even.code(), "invalid_split_prime");
     assert_eq!(
-        UnitDistanceSet::try_new_multiquadratic(vec![5, 17], 2, 1).unwrap_err(),
+        invalid_even,
         GenerationError::InvalidSplitPrime { split_prime: 2 }
     );
+
+    let invalid_composite =
+        UnitDistanceSet::try_new_multiquadratic(vec![5, 17], 91, 1).unwrap_err();
+    assert_eq!(invalid_composite.code(), "invalid_split_prime");
     assert_eq!(
-        UnitDistanceSet::try_new_multiquadratic(vec![5, 17], 91, 1).unwrap_err(),
+        invalid_composite,
         GenerationError::InvalidSplitPrime { split_prime: 91 }
     );
+
+    let nonsplit = UnitDistanceSet::try_new_multiquadratic(vec![5, 17], 103, 1).unwrap_err();
+    assert_eq!(nonsplit.code(), "prime_not_split");
     assert_eq!(
-        UnitDistanceSet::try_new_multiquadratic(vec![5, 17], 103, 1).unwrap_err(),
+        nonsplit,
         GenerationError::PrimeNotSplit {
             split_prime: 103,
             generator: 5
@@ -128,8 +136,10 @@ fn test_algebraic_config_search_parameter_validation() {
 #[test]
 fn test_field_element_dimension_validation() {
     let field = field(&[5, -1]);
+    let err = FieldElement::try_from_coeffs(vec![q(1), q(2)], &field).unwrap_err();
+    assert_eq!(err.code(), "invalid_field_element_dimension");
     assert_eq!(
-        FieldElement::try_from_coeffs(vec![q(1), q(2)], &field).unwrap_err(),
+        err,
         GenerationError::InvalidFieldElementDimension {
             expected: 4,
             actual: 2,

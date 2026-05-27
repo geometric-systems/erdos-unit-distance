@@ -59,13 +59,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install maturin pytest
+          python -m pip install maturin
 
-      - name: Build and Install Python Bindings
-        run: |
-          cd python
-          maturin develop --release
-          cd ..
-
-      - name: Run Verification Script
-        run: python test_bindings.py
+      - name: Build and test Python bindings
+        run: ./scripts/check-python-smoke.sh
